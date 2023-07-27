@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <unistd.h>
 
 /**
   * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -21,6 +23,7 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
+typedef stack_t dlistint_t;
 /**
   * struct instruction_s - opcode and its function
   * @opcode: the opcode
@@ -35,24 +38,45 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/** double linked list function **/
+/**
+  * struct args_s - structure of arguments from main
+  * @av: name of the file
+  * @ac: number of arguments
+  * @line_no: number of the current line in the file
+  *
+  * Description: arguments passed to main from command line
+  * used in different functions
+  */
+typedef struct args_s
+{
+	char *av;
+	int ac;
+	unsigned int line_no;
+} args_t;
 
 /**
- * struct dlistint_s - doubly linked list
- * @n: integer
- * @prev: points to the previous node
- * @next: points to the next node
- *
- * Description: doubly linked list node structure
- *
+ * struct data_s - extern data to access inside functions
+ * @line: line from the file
+ * @words: parsed line
+ * @stack: pointer to the stack
+ * @file_ptr: file pointer
+ * @q_flag: flag for queue or stack
  */
-typedef struct dlistint_s
+typedef struct data_s
 {
-	int n;
-	struct dlistint_s *prev;
-	struct dlistint_s *next;
-} dlistint_t;
+	char *line;
+	char **words;
+	stack_t *stack;
+	FILE *file_ptr;
+	int q_flag;
+} data_t;
 
+extern data_t data;
+/** free.c **/
+void free_memory(int all);
+void free_array(char **args);
+
+/** double linked list function **/
 size_t print_dlistint(const dlistint_t *h);
 size_t dlistint_len(const dlistint_t *h);
 dlistint_t *add_dnodeint(dlistint_t **head, const int n);
