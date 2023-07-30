@@ -1,6 +1,8 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,6 +74,12 @@ typedef struct data_s
 } data_t;
 
 extern data_t data;
+
+#define UNKOWN "L%u: unknown nstruction %s\n"
+
+/** use_func.c **/
+void (*use_func(char **bytecode_tok))(stack_t **, unsigned int);
+
 /** free.c **/
 void free_memory(int all);
 void free_array(char **args);
@@ -85,5 +93,8 @@ void free_dlistint(dlistint_t *head);
 dlistint_t *get_dnodeint_at_index(dlistint_t *head, unsigned int index);
 dlistint_t *insert_dnodeint_at_index(dlistint_t **h, unsigned int idx, int n);
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index);
+
+/** split_string **/
+char **split_string(char *str);
 
 #endif
